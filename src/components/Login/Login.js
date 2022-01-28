@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router';
 import useAuth from '../context/useAuth';
 
@@ -7,6 +7,17 @@ const Login = () => {
     const { googleSignIn, facebookSignIn, user, emailSignIn } = useAuth()
     const location = useLocation()
     const navigate = useNavigate()
+    const [users, setUsers] = useState([])
+    const token = localStorage.getItem('userToken')
+
+    useEffect(() => {
+        fetch('http://localhost:3001/api/v1/person', {
+            headers: {
+                'authorization': `Bearer ${token}`
+            }
+        })
+    }, []);
+
 
     // handle email sign in
     const handleSignInData = e => {
